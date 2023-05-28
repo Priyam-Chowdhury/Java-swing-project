@@ -1,0 +1,164 @@
+package signupform;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextPane;
+import java.awt.Color;
+
+public class signup extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_4;
+	private JPasswordField passwordField;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					signup frame = new signup();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	Connection con=null;
+	public signup() {
+		
+		
+		con=DB.dbconnect();
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 449, 378);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("FIRST NAME");
+		lblNewLabel.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel.setBounds(76, 100, 96, 26);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("LAST NAME");
+		lblNewLabel_1.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel_1.setBounds(76, 137, 96, 26);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("USER ID");
+		lblNewLabel_2.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel_2.setBounds(76, 174, 81, 26);
+		contentPane.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("PASSWORD");
+		lblNewLabel_3.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel_3.setBounds(76, 211, 79, 26);
+		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("EMAIL ID");
+		lblNewLabel_4.setFont(new Font("Sitka Small", Font.BOLD | Font.ITALIC, 12));
+		lblNewLabel_4.setBounds(76, 255, 81, 16);
+		contentPane.add(lblNewLabel_4);
+		
+		textField = new JTextField();
+		textField.setBounds(248, 101, 86, 20);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(248, 138, 86, 20);
+		contentPane.add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(248, 175, 86, 20);
+		contentPane.add(textField_2);
+		textField_2.setColumns(10);
+		
+		textField_4 = new JTextField();
+		textField_4.setBounds(248, 251, 86, 20);
+		contentPane.add(textField_4);
+		textField_4.setColumns(10);
+		
+		JLabel lblNewLabel_5 = new JLabel("SIGN UP FORM");
+		lblNewLabel_5.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 14));
+		lblNewLabel_5.setBounds(148, 43, 122, 26);
+		contentPane.add(lblNewLabel_5);
+		
+		passwordField = new JPasswordField();
+		passwordField.setBounds(248, 212, 86, 20);
+		contentPane.add(passwordField);
+		
+		JButton btnNewButton = new JButton("SIGN UP");
+		btnNewButton.setForeground(new Color(0, 0, 0));
+		btnNewButton.setBackground(new Color(0, 0, 0));
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try
+				{
+				String first=textField.getText();
+				String last=textField_1.getText();
+				String user=textField_2.getText();
+				String password=passwordField.getText();
+				String email=textField_4.getText();
+				PreparedStatement pst=con.prepareStatement("insert into signup(firstname,lastname,userid,password,emailid) values(?,?,?,?,?)");
+				pst.setString(1,first);
+				pst.setString(2,last);
+				pst.setString(3,user);
+				pst.setString(4,password);
+				pst.setString(5,email);
+				pst.executeUpdate();
+				JOptionPane.showMessageDialog(null,"Thank you for signup");
+				textField.setText("");
+				textField_1.setText("");
+				textField_2.setText("");
+				passwordField.setText("");
+				textField_4.setText("");
+				}
+				catch(Exception e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setBounds(148, 292, 89, 23);
+		contentPane.add(btnNewButton);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.RED);
+		panel.setBounds(0, 0, 433, 84);
+		contentPane.add(panel);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setForeground(Color.BLACK);
+		panel_1.setBackground(Color.GRAY);
+		panel_1.setBounds(0, 84, 433, 255);
+		contentPane.add(panel_1);
+	}
+}
